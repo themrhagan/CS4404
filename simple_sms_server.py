@@ -30,12 +30,13 @@ def generate_rsa_keys():
 
     publickey = key.publickey() # pub key export for exchange
 
-    encrypted = publickey.encrypt('encrypt this message', 32)
+    encrypted = publickey.encrypt('encrypt this message'.encode('utf-8'), 32)
     decrypted = key.decrypt(ast.literal_eval(str(encrypted)))
 
     print(decrypted)
 
     # print(key)
+    # print(key.publickey())
 
 
 
