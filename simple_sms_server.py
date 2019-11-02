@@ -6,7 +6,9 @@ from Crypto import Random
 import ast
 
 
-def main():
+database = b'-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLT5ZnO23WWbEiZodJji35W/fI\nzmp8EJuquObc/6KXU8g+TAorw0O5z4TKTwUHiruOc2M3bj6Cb4J5QKE5DRetqDkW\nkX/Z6Pz7IfACcpXYn0T5RMu81TwrIgBu4EoFjIYGWSMWUg27LO5W45PS4gnhkQGB\nIbZc5jXnVGRZ4sGt/QIDAQAB\n-----END PUBLIC KEY-----'
+
+def send_code():
 
     HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
     PORT = 65432        # Port to listen on (non-privileged ports are > 1023)
@@ -18,8 +20,14 @@ def main():
         with conn:
             print('Connected by', addr)
 
+            publickey = RSA.importKey(database)
+
             data = b'Encrypted message'
-            conn.sendall(data)
+
+            data = publickey.encrypt(data, 32)
+            print(str(data).encode())
+
+            conn.sendall(str(data).encode())
 
             s.close()
 
@@ -30,15 +38,14 @@ def generate_rsa_keys():
 
     publickey = key.publickey() # pub key export for exchange
 
-    encrypted = publickey.encrypt('encrypt this message'.encode('utf-8'), 32)
+    encrypted = publickey.encrypt('This string was encrypted'.encode('utf-8'), 32)
     decrypted = key.decrypt(ast.literal_eval(str(encrypted)))
 
     print(decrypted)
-
-    # print(key)
-    # print(key.publickey())
+    print(key.publickey().exportKey('PEM'))
+    print(key.exportKey('PEM'))
 
 
 
 if __name__ == "__main__":
-    generate_rsa_keys()
+    send_code()
