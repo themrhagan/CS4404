@@ -15,7 +15,7 @@ server_private_key = b'-----BEGIN RSA PRIVATE KEY-----\nMIICXQIBAAKBgQDUykQgqAPT
 
 def send_code():
 
-    HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+    HOST = '10.4.10.65'  # Standard loopback interface address (localhost)
     PORT = 65432        # Port to listen on (non-privileged ports are > 1023)
 
 
@@ -28,7 +28,7 @@ def send_code():
             print('Connected by', addr)
 
             # hash our 2FA code
-            code = b'123456'
+            code = b'Auth Code: 123456'
             hash = MD5.new(code).digest()
 
             # create signature for hashed code
