@@ -20,7 +20,7 @@ This script is an unsecure client that receives an SMS authentication code in pl
 This script is a secure server that encrypts, signs, and sends an SMS authentication code. It requires the Pycrypto package and can be run with "python3 sms\_server_secure.py".
 ### sms\_server_unsecure.py
 This script is an unsecure server that sends an SMS authentication code in plain text. It has no dependencies and can be run with "python3 sms\_server_unsecure.py".
-### mission1_report.py
+### mission1_report.pdf
 This file is a report documenting the setup infrastructure on the class virtual missions in addition to a detailed description of this mission's implementation.
 
 ## License
