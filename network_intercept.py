@@ -14,7 +14,7 @@ def print_and_accept(raw_pkt):
 
 
 nfqueue = NetfilterQueue()
-nfqueue.bind(0, print_and_accept)
+nfqueue.bind(1, print_and_accept)
 try:
     nfqueue.run()
 except KeyboardInterrupt:
